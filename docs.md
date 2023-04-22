@@ -16,4 +16,9 @@
 - useState -> hook that allow us to add react state in function component
 - useReducer
 
+## async js
+- async makes a function to return promise 
+- await makes a function stop and wait for promise before it continue
+- promise is js object that generates value after async function success or 
+ an error if it doesnot success due to time out,network error
     
