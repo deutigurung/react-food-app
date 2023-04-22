@@ -1,7 +1,16 @@
+import { useState } from "react";
 import Search from "../../components";
 const HomePage = () =>{
+    //loading state
+    const [loading,setLoading] = useState(false);
+
+    //store results fetch from api
+    const [receipes,setReceipes] = useState([]);
+
     const getDataFromSearchComponent = (getData) =>{
         // console.log('getData',getData);
+        // set loading state true before we call api
+        setLoading(true); 
         //call api
         async function getReceipes() {
             const options = {
@@ -11,12 +20,19 @@ const HomePage = () =>{
                     'X-RapidAPI-Host': 'edamam-food-and-grocery-database.p.rapidapi.com'
                 }
             };
-            const apiResponse = await fetch(`https://edamam-food-and-grocery-database.p.rapidapi.com/api/food-database/v2/parser?nutrition-type=cooking&category%5B0%5D=generic-foods&health%5B0%5D=alcohol-free`,options);
+            const apiResponse = await fetch(`https://edamam-food-and-grocery-database.p.rapidapi.com/api/food-database/v2/parser?ingr=${getData}&nutrition-type=cooking&category%5B0%5D=generic-foods&health%5B0%5D=alcohol-free`,options);
             const result  = await apiResponse.json();
-            console.log('result',result);
+            //use object destructor syntax to extract hints property from result obj
+            const {hints} = result; 
+            // console.log('result',hints);
+            if(hints && hints.length > 0){
+                setLoading(false); //set loading false after data fetch
+                setReceipes(hints);
+            }
         }
         getReceipes()
     }
+    console.log('loading & receipes',loading,receipes);
     return (
         <div className="home-page">
             <Search getDataFromSearchComponent = {getDataFromSearchComponent}></Search>
