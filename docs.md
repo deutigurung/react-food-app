@@ -11,3 +11,9 @@
 - properties -> classname ,id,click 
 - children /body
 - for eg.  return React.createElement('div','','This component')
+
+## State management and Hook
+- useState 
+- useReducer
+
+    
