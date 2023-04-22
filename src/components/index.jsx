@@ -1,16 +1,23 @@
 import { useState } from 'react';
 import './style.css'
 
-const Search = () =>{
+const Search = (props) =>{
     const [searchValue,setSearchValue] = useState('') //initial value
+    const {getDataFromSearchComponent} = props;
 
     const handleSearchValue = (event) =>{
         const {value} = event.target;
         setSearchValue(value);
     }
+
+    const handleSubmit = (e) =>{
+        e.preventDefault();
+        getDataFromSearchComponent(searchValue);
+
+    }
     // console.log(searchValue);
     return (
-        <form className="search-page">
+        <form onSubmit={handleSubmit} className="search-page">
             <input value={searchValue} onChange={handleSearchValue}
             type="text" name="search" id="search" placeholder="Search..." />
             <button type="submit">Search</button>
@@ -18,3 +25,8 @@ const Search = () =>{
     )
 };
 export default Search;
+/*
+    here on form submit , handleSubmit() get input variable from form and
+    set input variable to getDataFromSearchComponent().
+    then, getDataFromSearchComponent pass data to Homepage
+*/

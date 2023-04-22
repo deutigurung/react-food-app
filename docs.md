@@ -13,7 +13,7 @@
 - for eg.  return React.createElement('div','','This component')
 
 ## State management and Hook
-- useState 
+- useState -> hook that allow us to add react state in function component
 - useReducer
 
     
