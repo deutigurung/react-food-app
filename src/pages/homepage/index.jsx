@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Search from "../../components";
+import Search from "../../components/search";
 const HomePage = () =>{
     //loading state
     const [loading,setLoading] = useState(false);
