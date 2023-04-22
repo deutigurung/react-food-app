@@ -1,9 +1,12 @@
-import logo from './logo.svg';
 import './App.css';
-import React from 'react';
+import HomePage from './pages/homepage';
 
 function App() {
-  return React.createElement('div','','This component')
+     return (
+        <div className='App'>
+            <HomePage />
+        </div>
+     );
 }
 
 export default App;
