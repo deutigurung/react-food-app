@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Search from "../../components/search";
 import RecipeItem from "../../components/receipe-item"; 
+import FavoriteItem from "../../components/favorite-item";
 import "./style.css";
 
 const HomePage = () =>{
@@ -55,26 +56,50 @@ const HomePage = () =>{
         }
     }
     // console.log('loading & receipes',loading,receipes);
-    console.log('@favorites',favorites);
+    // console.log('@favorites',favorites);
+
+    useEffect(()=>{
+       const extractFavoritesFromLocalStorage = JSON.parse(localStorage.getItem('favorites'));
+    //    console.log('extract',extractFavoritesFromLocalStorage);
+       setFavorites(extractFavoritesFromLocalStorage);
+    },[]);
 
     return (
-        <div className="home-page">
+        <section class="menu menu-page" id="menu">
             <Search getDataFromSearchComponent = {getDataFromSearchComponent}></Search>
             {/* show loading state */}
             {
                 loading && <div>Loading...</div>
             }
+             {/* render favorites receipes */}
+             <div className="featured">
+                <div className="title-text">
+                    <h2>Favorites</h2>
+                </div>
+                <div className="content">
+                    {
+                        favorites && favorites.length > 0 ? favorites.map((item,index) => (
+                            <FavoriteItem id={item.food.foodId} image={item.food.image} title={item.food.label} />
+                        )) : null
+                    }
+                </div>
+            </div>
             {/* render receipes */}
-            <div className="content">
-            {
-                receipes && receipes.length > 0 ? receipes.map((item,index) => (
-                    <RecipeItem id={item.food.foodId} image={item.food.image} title={item.food.label} 
-                    addToFavorites={()=>addToFavorites(item)}/>
-                )) : null
-            }
+            <div className="popular">
+                <div class="title-text">
+                    <h2>Popular This Month</h2>
+                </div>
+                <div className="content">
+                {
+                    receipes && receipes.length > 0 ? receipes.map((item,index) => (
+                        <RecipeItem id={item.food.foodId} image={item.food.image} title={item.food.label} 
+                        addToFavorites={()=>addToFavorites(item)}/>
+                    )) : null
+                }
+                </div>
             </div>
            
-        </div>
+        </section>
     )
 };
 export default HomePage;
@@ -89,4 +114,11 @@ In order to get value from child, we need to first pass method to child as props
 For e.g. 
     we create getDataFromSearchComponent method to get value from search component and 
     pass method as property to Search component
+
+useEffect Hooks
+useEffect is a hook in React that allows developers to manage side effects in a React component.
+useEffect hook takes two parameters: a function that describes the side effect, 
+ and an optional array of dependencies that determine when the side effect should be re-run. 
+ For e.g.
+    
 */

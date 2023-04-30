@@ -1,7 +1,154 @@
- .content {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    flex-direction: row-reverse;
-    margin-top: 40px;
-  }
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
+html {
+  font-size: 62.5%;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  scroll-behavior:smooth;
+}
+
+:root {
+  --white: #fff;
+  --bg: #ff0157;
+}
+
+li {
+  list-style-type: none;
+}
+
+a {
+  color: var(--white);
+  text-decoration: none;
+}
+
+h2 {
+  font-size: 2.4rem;
+}
+
+p {
+  font-size: 1.6rem;
+  font-weight: 300;
+  color: #111;
+}
+
+.btn {
+  font-size: 2rem;
+  color: var(--white);
+  background: var(--bg);
+  display: inline-block;
+  padding: 10px 30px;
+  margin-top: 20px;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 2px;
+  transition: 0.5s;
+}
+
+.order-btn {
+  font-size: 1.8rem;
+  font-weight:400;
+  color: var(--white);
+  background: var(--bg);
+  display: inline-block;
+  padding: 8px 30px;
+  margin-top: 20px;
+  /* text-transform: uppercase; */
+  text-decoration: none;
+  letter-spacing: 1px;
+  border-radius: 1rem;
+  transition: 0.5s;
+}
+
+.btn:hover {
+  letter-spacing: 6px;
+}
+
+.order-btn:hover {
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+
+/* About Us */
+.row {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.row .col50 {
+  position: relative;
+  /* top: 30px; */
+  width: 48%;
+}
+
+.titletext {
+  color: #111;
+  font-size: 3rem;
+  font-weight: 300;
+}
+
+.titletext span {
+  color: var(--bg);
+  font-weight: 700;
+  font-size: 3.5rem;
+}
+
+.row .col50 .imgbox {
+  position: relative;
+  width: 100%;
+  /* min-height: 300px; */
+  height: 100%;
+}
+
+.row .col50 .imgbox img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+/* About Us End */
+
+/* Menu */
+
+
+.title-text h2{
+  text-align: center;
+  color: var(--bg);
+  font-size: 2.9rem;
+  text-decoration:overline;
+}
+
+.popular{
+  margin-top: 50px;
+}
+
+.menu-page-title{
+  padding-block: 60px;
+}
+.title {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu .content {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: row-reverse;
+  margin-top: 40px;
+}
+
+
+
+/* Menu Ends */
