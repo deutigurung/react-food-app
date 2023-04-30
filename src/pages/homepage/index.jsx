@@ -10,6 +10,9 @@ const HomePage = () =>{
     //store results fetch from api
     const [receipes,setReceipes] = useState([]);
 
+    //store favorite receipe list array
+    const [favorites,setFavorites] = useState([]);
+
     const getDataFromSearchComponent = (getData) =>{
         // console.log('getData',getData);
         // set loading state true before we call api
@@ -35,7 +38,25 @@ const HomePage = () =>{
         }
         getReceipes()
     }
+
+    const addToFavorites = (currentRecipeItem) => {
+        // console.log('@receipeid',currentRecipeItem);
+        let copyFavorite = [...favorites]; //add to favorites
+        //remove duplicate favorites from favorites array
+        const filter = copyFavorite.findIndex(item => item.food.foodId === currentRecipeItem.food.foodId);
+        //if filter == -1 then not present
+        if(filter == -1){
+            copyFavorite.push(currentRecipeItem);
+            setFavorites(copyFavorite);
+            //store in localstorage as string 
+            localStorage.setItem('favorites',JSON.stringify(copyFavorite));
+        }else{
+            alert("Already in favorites");
+        }
+    }
     // console.log('loading & receipes',loading,receipes);
+    console.log('@favorites',favorites);
+
     return (
         <div className="home-page">
             <Search getDataFromSearchComponent = {getDataFromSearchComponent}></Search>
@@ -47,7 +68,8 @@ const HomePage = () =>{
             <div className="content">
             {
                 receipes && receipes.length > 0 ? receipes.map((item,index) => (
-                    <RecipeItem id={item.food.foodId} image={item.food.image} title={item.food.label} />
+                    <RecipeItem id={item.food.foodId} image={item.food.image} title={item.food.label} 
+                    addToFavorites={()=>addToFavorites(item)}/>
                 )) : null
             }
             </div>
