@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Search from "../../components/search";
 import RecipeItem from "../../components/receipe-item"; 
+import "./style.css";
 
 const HomePage = () =>{
     //loading state
@@ -43,11 +44,14 @@ const HomePage = () =>{
                 loading && <div>Loading...</div>
             }
             {/* render receipes */}
+            <div className="content">
             {
                 receipes && receipes.length > 0 ? receipes.map((item,index) => (
                     <RecipeItem id={item.food.foodId} image={item.food.image} title={item.food.label} />
                 )) : null
             }
+            </div>
+           
         </div>
     )
 };
