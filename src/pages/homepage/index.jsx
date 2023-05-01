@@ -27,14 +27,14 @@ const HomePage = () =>{
                     'X-RapidAPI-Host': 'edamam-food-and-grocery-database.p.rapidapi.com'
                 }
             };
-            const apiResponse = await fetch(`https://edamam-food-and-grocery-database.p.rapidapi.com/api/food-database/v2/parser?ingr=${getData}&category%5B0%5D=generic-foods&health%5B0%5D=alcohol-free`,options);
+            const apiResponse = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=0222a264924a44d1acdaf595d9ef9369&query=${getData}&number=10`);
             const result  = await apiResponse.json();
             //use object destructor syntax to extract hints property from result obj
-            const {hints} = result; 
+            const {results} = result; 
             // console.log('result',hints);
-            if(hints && hints.length > 0){
+            if(results && results.length > 0){
                 setLoading(false); //set loading false after data fetch
-                setReceipes(hints);
+                setReceipes(results);
             }
         }
         getReceipes()
@@ -45,7 +45,7 @@ const HomePage = () =>{
         //... spread operator is used to expand array into new array without affecting original
         let copyFavorite = [...favorites]; //add to favorites
         //remove duplicate favorites from favorites array
-        const filter = copyFavorite.findIndex(item => item.food.foodId === currentRecipeItem.food.foodId);
+        const filter = copyFavorite.findIndex(item => item.id === currentRecipeItem.id);
         //if filter == -1 then not present
         if(filter === -1){
             copyFavorite.push(currentRecipeItem);
@@ -58,6 +58,16 @@ const HomePage = () =>{
     }
     // console.log('loading & receipes',loading,receipes);
     // console.log('@favorites',favorites);
+
+    const removeFromFavorites = (currentItemId) => {
+       
+        let favoritesData = [...favorites];
+        //remove item list whose id = currentItem ,filter() is used to remove data from array list
+         favoritesData = favoritesData.filter(item => item.id !== currentItemId);
+        // console.log(currentItemId,favoritesData)
+        setFavorites(favoritesData);
+        localStorage.setItem('favorites',JSON.stringify(favoritesData));
+    }
 
     useEffect(()=>{
        const extractFavoritesFromLocalStorage = JSON.parse(localStorage.getItem('favorites'));
@@ -82,7 +92,8 @@ const HomePage = () =>{
                 <div className="content">
                     {
                         favorites && favorites.length > 0 ? favorites.map((item,index) => (
-                            <FavoriteItem id={item.food.foodId} image={item.food.image} title={item.food.label} />
+                            <FavoriteItem id={item.id} image={item.image} title={item.title}
+                            removeFromFavorites={()=>removeFromFavorites(item.id)} />
                         )) : null
                     }
                 </div>
@@ -95,7 +106,7 @@ const HomePage = () =>{
                 <div className="content">
                 {
                     receipes && receipes.length > 0 ? receipes.map((item,index) => (
-                        <RecipeItem id={item.food.foodId} image={item.food.image} title={item.food.label} 
+                        <RecipeItem id={item.id} image={item.image} title={item.title} 
                         addToFavorites={()=>addToFavorites(item)}/>
                     )) : null
                 }

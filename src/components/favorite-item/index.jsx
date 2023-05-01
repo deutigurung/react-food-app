@@ -1,7 +1,7 @@
 import "./style.css";
 
 const FavoriteItem = (props) => {
-    const {id,image,title} = props; //destructor
+    const {id,image,title,removeFromFavorites} = props; //destructor
     // console.log('items',props);
     return (
             <div class="box menu-page" key={id}>
@@ -10,7 +10,7 @@ const FavoriteItem = (props) => {
                 </div>
                 <div class="text">
                     <h3>{title}</h3>
-                    <a class="order-btn">Remove from Favorite</a>
+                    <a class="order-btn" onClick={removeFromFavorites}>Remove from Favorite</a>
                 </div>
             </div>
     )
