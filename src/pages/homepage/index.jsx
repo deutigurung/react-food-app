@@ -42,11 +42,12 @@ const HomePage = () =>{
 
     const addToFavorites = (currentRecipeItem) => {
         // console.log('@receipeid',currentRecipeItem);
+        //... spread operator is used to expand array into new array without affecting original
         let copyFavorite = [...favorites]; //add to favorites
         //remove duplicate favorites from favorites array
         const filter = copyFavorite.findIndex(item => item.food.foodId === currentRecipeItem.food.foodId);
         //if filter == -1 then not present
-        if(filter == -1){
+        if(filter === -1){
             copyFavorite.push(currentRecipeItem);
             setFavorites(copyFavorite);
             //store in localstorage as string 
@@ -61,7 +62,9 @@ const HomePage = () =>{
     useEffect(()=>{
        const extractFavoritesFromLocalStorage = JSON.parse(localStorage.getItem('favorites'));
     //    console.log('extract',extractFavoritesFromLocalStorage);
-       setFavorites(extractFavoritesFromLocalStorage);
+       if(extractFavoritesFromLocalStorage !== null){
+            setFavorites(extractFavoritesFromLocalStorage);
+       }
     },[]);
 
     return (
