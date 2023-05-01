@@ -14,6 +14,9 @@ const HomePage = () =>{
     //store favorite receipe list array
     const [favorites,setFavorites] = useState([]);
 
+    //state for api is success or not
+    const [apiCallSuccess,setApiCallSuccess] = useState(false);
+
     const getDataFromSearchComponent = (getData) =>{
         // console.log('getData',getData);
         // set loading state true before we call api
@@ -35,6 +38,7 @@ const HomePage = () =>{
             if(results && results.length > 0){
                 setLoading(false); //set loading false after data fetch
                 setReceipes(results);
+                setApiCallSuccess(true); 
             }
         }
         getReceipes()
@@ -58,6 +62,7 @@ const HomePage = () =>{
     }
     // console.log('loading & receipes',loading,receipes);
     // console.log('@favorites',favorites);
+    console.log('@apicall',apiCallSuccess);
 
     const removeFromFavorites = (currentItemId) => {
        
@@ -79,7 +84,8 @@ const HomePage = () =>{
 
     return (
         <section class="menu menu-page" id="menu">
-            <Search getDataFromSearchComponent = {getDataFromSearchComponent}></Search>
+            <Search getDataFromSearchComponent = {getDataFromSearchComponent} 
+                apiCallSuccess={apiCallSuccess} setApiCallSuccess={setApiCallSuccess}></Search>
             {/* show loading state */}
             {
                 loading && <div>Loading...</div>

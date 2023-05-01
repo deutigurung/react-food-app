@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './style.css'
 
 const Search = (props) =>{
     const [searchValue,setSearchValue] = useState('') //initial value
-    const {getDataFromSearchComponent} = props;
+    const {getDataFromSearchComponent,setApiCallSuccess,apiCallSuccess} = props;
 
     const handleSearchValue = (event) =>{
         const {value} = event.target;
@@ -15,6 +15,12 @@ const Search = (props) =>{
         getDataFromSearchComponent(searchValue);
 
     }
+    useEffect(()=>{
+        if(apiCallSuccess){
+            setSearchValue('')
+            setApiCallSuccess(false)
+        }
+    },[apiCallSuccess])
     // console.log(searchValue);
     return (
         <form onSubmit={handleSubmit} className="search-page">
