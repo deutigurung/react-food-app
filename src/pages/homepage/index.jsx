@@ -108,7 +108,7 @@ const HomePage = () =>{
     );
 
     return (
-        <section class="menu menu-page" id="menu">
+        <section className="menu menu-page" id="menu">
             <Search getDataFromSearchComponent = {getDataFromSearchComponent} 
                 apiCallSuccess={apiCallSuccess} setApiCallSuccess={setApiCallSuccess}></Search>
             {/* show loading state */}
@@ -137,7 +137,7 @@ const HomePage = () =>{
             </div>
             {/* render receipes */}
             <div className="popular">
-                <div class="title-text">
+                <div className="title-text">
                     <h2>Popular This Month</h2>
                 </div>
                 <div className="content">
