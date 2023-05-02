@@ -7,9 +7,9 @@ const ThemeButton = () => {
     //consume the context using useContext hook and return a reference to the context object
     const { theme,setTheme} = useContext(ThemeContext);
     // console.log(theme,setTheme)
-    //toggle setTheme when theme is true and setTheme is false
+    //toggle setTheme and change theme bg if it is true
     return(
-        <button onClick={()=>setTheme(!theme)} className="theme-button">
+        <button style={theme ? {backgroundColor: '#12343b'}: {}} onClick={()=>setTheme(!theme)} className="theme-button">
             Change Theme
         </button>
     );

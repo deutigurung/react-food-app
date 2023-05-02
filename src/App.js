@@ -23,7 +23,7 @@ function App() {
             theme,
             setTheme
         }} >
-        <div className='App'>
+        <div className='App' style={theme ? {backgroundColor: '#2c7dfa'} : {}}>
             <ThemeButton/>
             <HomePage />
         </div>
