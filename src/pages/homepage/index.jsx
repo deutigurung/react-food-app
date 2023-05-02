@@ -1,9 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState ,useReducer } from "react";
 import Search from "../../components/search";
 import RecipeItem from "../../components/receipe-item"; 
 import FavoriteItem from "../../components/favorite-item";
 import "./style.css";
 
+const reducer  = (state,action) =>{
+    switch(action.type){
+        case "filters":
+            // console.log('reducerAction',action)
+            return {
+                ...state,
+                filteredValue: action.value
+            };
+            default:
+                return state;
+
+    }
+}
+const initialState = {
+    filteredValue : ''
+}
 const HomePage = () =>{
     //loading state
     const [loading,setLoading] = useState(false);
@@ -16,6 +32,9 @@ const HomePage = () =>{
 
     //state for api is success or not
     const [apiCallSuccess,setApiCallSuccess] = useState(false);
+
+    //use reducer hooks
+    const [filteredState,dispatch] = useReducer(reducer,initialState);
 
     const getDataFromSearchComponent = (getData) =>{
         // console.log('getData',getData);
@@ -62,7 +81,7 @@ const HomePage = () =>{
     }
     // console.log('loading & receipes',loading,receipes);
     // console.log('@favorites',favorites);
-    console.log('@apicall',apiCallSuccess);
+    // console.log('@apicall',apiCallSuccess);
 
     const removeFromFavorites = (currentItemId) => {
        
@@ -82,6 +101,12 @@ const HomePage = () =>{
        }
     },[]);
 
+    // console.log("#filteredState",filteredState)
+    //filter favorites items using includes() which check if a given string contains or not
+    const filterFavoritesItems = favorites.filter((item) => 
+        item.title.toLowerCase().includes(filteredState.filteredValue)
+    );
+
     return (
         <section class="menu menu-page" id="menu">
             <Search getDataFromSearchComponent = {getDataFromSearchComponent} 
@@ -89,15 +114,21 @@ const HomePage = () =>{
             {/* show loading state */}
             {
                 loading && <div>Loading...</div>
-            }
+           }
              {/* render favorites receipes */}
              <div className="featured">
                 <div className="title-text">
                     <h2>Favorites</h2>
                 </div>
+                <div className="search-favorites">
+                    <input type="text"
+                    onChange={(e)=>dispatch({type:"filters",value:e.target.value})}
+                    value={filteredState.filteredValue}
+                    name="searchFavorites" placeholder="Search Favorites ..."/>
+                </div>
                 <div className="content">
                     {
-                        favorites && favorites.length > 0 ? favorites.map((item,index) => (
+                        filterFavoritesItems && filterFavoritesItems.length > 0 ? filterFavoritesItems.map((item,index) => (
                             <FavoriteItem id={item.id} image={item.image} title={item.title}
                             removeFromFavorites={()=>removeFromFavorites(item.id)} />
                         )) : null
@@ -139,6 +170,23 @@ useEffect Hooks
 useEffect is a hook in React that allows developers to manage side effects in a React component.
 useEffect hook takes two parameters: a function that describes the side effect, 
  and an optional array of dependencies that determine when the side effect should be re-run. 
- For e.g.
+
+
+ useReducer Hooks
+  -similar to useState but it lets us move the state update logic 
+  from event handlers into a single function outside of our component.
+  it accepts 3 args:
+  - reducer function
+  - initial state
+  - callback function that is called after the state has been updated(optional)
+
+  for eg:
+  const [filteredState,dispatch] = useReducer(reducer,initialState);
+  dipatch method will dispatch action base on action type nd return result
+
+    -This event will be dispatched when filter-search input onchange event is triggered.
+    - We prefer useReducer when: 
+        =>js objects or array as state
+        =>complex logic 
     
 */
