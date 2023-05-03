@@ -20,7 +20,7 @@ const Search = (props) =>{
             setSearchValue('')
             setApiCallSuccess(false)
         }
-    },[apiCallSuccess])
+    },[apiCallSuccess,setApiCallSuccess])
     // console.log(searchValue);
     return (
         <form onSubmit={handleSubmit} className="search-page">

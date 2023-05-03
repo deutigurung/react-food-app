@@ -1,4 +1,4 @@
-import { useEffect, useState ,useReducer } from "react";
+import { useEffect, useState ,useReducer, useCallback } from "react";
 import Search from "../../components/search";
 import RecipeItem from "../../components/receipe-item"; 
 import FavoriteItem from "../../components/favorite-item";
@@ -42,14 +42,7 @@ const HomePage = () =>{
         setLoading(true); 
         //call api
         async function getReceipes() {
-            const options = {
-                method: 'GET',
-                headers: {
-                    'X-RapidAPI-Key': '92b2fddb81msh33761ab8fe8e5ecp1a201ajsn2b68b233bd1f',
-                    'X-RapidAPI-Host': 'edamam-food-and-grocery-database.p.rapidapi.com'
-                }
-            };
-            const apiResponse = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=0222a264924a44d1acdaf595d9ef9369&query=${getData}&number=10`);
+            const apiResponse = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.REACT_APP_API_KEY}&query=${getData}&number=10`);
             const result  = await apiResponse.json();
             //use object destructor syntax to extract hints property from result obj
             const {results} = result; 
@@ -63,22 +56,33 @@ const HomePage = () =>{
         getReceipes()
     }
 
-    const addToFavorites = (currentRecipeItem) => {
-        // console.log('@receipeid',currentRecipeItem);
-        //... spread operator is used to expand array into new array without affecting original
-        let copyFavorite = [...favorites]; //add to favorites
-        //remove duplicate favorites from favorites array
+    const addToFavorites = useCallback((currentRecipeItem)=>{
+        let copyFavorite = [...favorites];
         const filter = copyFavorite.findIndex(item => item.id === currentRecipeItem.id);
-        //if filter == -1 then not present
         if(filter === -1){
             copyFavorite.push(currentRecipeItem);
             setFavorites(copyFavorite);
-            //store in localstorage as string 
             localStorage.setItem('favorites',JSON.stringify(copyFavorite));
         }else{
             alert("Already in favorites");
         }
-    }
+    },[favorites]);
+    // const addToFavorites = (currentRecipeItem) => {
+    //     // console.log('@receipeid',currentRecipeItem);
+    //     //... spread operator is used to expand array into new array without affecting original
+    //     let copyFavorite = [...favorites]; //add to favorites
+    //     //remove duplicate favorites from favorites array
+    //     const filter = copyFavorite.findIndex(item => item.id === currentRecipeItem.id);
+    //     //if filter == -1 then not present
+    //     if(filter === -1){
+    //         copyFavorite.push(currentRecipeItem);
+    //         setFavorites(copyFavorite);
+    //         //store in localstorage as string 
+    //         localStorage.setItem('favorites',JSON.stringify(copyFavorite));
+    //     }else{
+    //         alert("Already in favorites");
+    //     }
+    // }
     // console.log('loading & receipes',loading,receipes);
     // console.log('@favorites',favorites);
     // console.log('@apicall',apiCallSuccess);
@@ -107,6 +111,16 @@ const HomePage = () =>{
         item.title.toLowerCase().includes(filteredState.filteredValue)
     );
 
+    //wrap recipes method on its callback hook and it render whenever its dependencies (receipes,addToFavorites) are updated
+    const renderRecipes = useCallback(()=>{
+        if(receipes && receipes.length > 0){
+            return receipes.map((item) => (
+                    <RecipeItem id={item.id} image={item.image} title={item.title} 
+                    addToFavorites={()=>addToFavorites(item)}/>
+                ));
+        }
+        
+    },[receipes,addToFavorites]);
     return (
         <section className="menu menu-page" id="menu">
             <Search getDataFromSearchComponent = {getDataFromSearchComponent} 
@@ -142,10 +156,11 @@ const HomePage = () =>{
                 </div>
                 <div className="content">
                 {
-                    receipes && receipes.length > 0 ? receipes.map((item,index) => (
-                        <RecipeItem id={item.id} image={item.image} title={item.title} 
-                        addToFavorites={()=>addToFavorites(item)}/>
-                    )) : null
+                    renderRecipes()
+                    // receipes && receipes.length > 0 ? receipes.map((item,index) => (
+                    //     <RecipeItem id={item.id} image={item.image} title={item.title} 
+                    //     addToFavorites={()=>addToFavorites(item)}/>
+                    // )) : null
                 }
                 </div>
             </div>

@@ -21,4 +21,7 @@
 - await makes a function stop and wait for promise before it continue
 - promise is js object that generates value after async function success or 
  an error if it doesnot success due to time out,network error
+
+ ## useCallback Hooks in react
+- react hooks that lets us cache a function definition between re-renders
     
