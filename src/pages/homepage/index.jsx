@@ -127,7 +127,7 @@ const HomePage = () =>{
                 apiCallSuccess={apiCallSuccess} setApiCallSuccess={setApiCallSuccess}></Search>
             {/* show loading state */}
             {
-                loading && <div>Loading...</div>
+                loading && <div className="loading">Loading...</div>
            }
              {/* render favorites receipes */}
              <div className="featured">
@@ -142,6 +142,10 @@ const HomePage = () =>{
                 </div>
                 <div className="content">
                     {
+                         !filterFavoritesItems.length && 
+                        <div className="no-items">No Favorites Items</div>
+                    }
+                    {
                         filterFavoritesItems && filterFavoritesItems.length > 0 ? filterFavoritesItems.map((item,index) => (
                             <FavoriteItem id={item.id} image={item.image} title={item.title}
                             removeFromFavorites={()=>removeFromFavorites(item.id)} />
@@ -155,6 +159,10 @@ const HomePage = () =>{
                     <h2>Popular This Month</h2>
                 </div>
                 <div className="content">
+                {
+                    !loading && !receipes.length && 
+                    <div className="no-items">No Recipes Items</div>
+                }
                 {
                     renderRecipes()
                     // receipes && receipes.length > 0 ? receipes.map((item,index) => (

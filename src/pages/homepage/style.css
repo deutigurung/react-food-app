@@ -155,3 +155,9 @@ p {
   padding: 10px 25px;
   margin-bottom: 30px;
 }
+
+.loading, .no-items{
+  font-size: 40px;
+  text-transform: uppercase;
+  color: #fff;
+}
